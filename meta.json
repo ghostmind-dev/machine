@@ -1,0 +1,7 @@
+{
+  "id": "HAD2zVKmGiB0",
+  "type": "project",
+  "name": "machine",
+  "secrets": true,
+  "scope": "global"
+}

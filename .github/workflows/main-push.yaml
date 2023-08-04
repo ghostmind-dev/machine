@@ -1,0 +1,106 @@
+name: main-push
+on:
+  push:
+    branches:
+      - main
+env:
+  SRC: ${{github.workspace}}
+  VAULT_ROOT_TOKEN: ${{ secrets.VAULT_ROOT_TOKEN }}
+  VAULT_ADDR: ${{ secrets.VAULT_ADDR}}
+  GCP_PROJECT_NAME: ${{secrets.GCP_PROJECT_NAME}}
+  GOOGLE_APPLICATION_CREDENTIALS: '/tmp/gsa_key.json'
+jobs:
+  preview-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: run git safe.directory
+        if: ${{ github.event.inputs.LOCAL == 'true' }}
+        run: git config --global --add safe.directory "*"
+      - name: 'check github repository'
+        uses: actions/checkout@v3
+      - name: 'install root project npm packages'
+        run: npm install
+        working-directory: ${{github.workspace}}
+      - name: 'install run npm package'
+        run: |-
+          if [ ${{ github.event.inputs.LIVE }} == true ]; then
+            npm install ${SRC}/dev --global
+          else
+            npm install @ghostmind-dev/run --global
+          fi
+      - name: Run custom detect-files
+        id: detect-files
+        run: |
+          result=$(run custom detect-files '"${{ github.event.head_commit.message }}"')
+          echo "result=$result" >> $GITHUB_OUTPUT
+          if [ $result == 'no' ]; then
+            echo "no changes detected"
+          fi
+        working-directory: ${{ github.workspace }}/.github
+    outputs:
+      result: ${{ steps.detect-files.outputs.result }}
+  deploy-app:
+    runs-on: ubuntu-latest
+    needs: preview-push
+    if: ${{ needs.preview-push.outputs.result == 'yes' }}
+    steps:
+      - name: run git safe.directory
+        if: ${{ github.event.inputs.LOCAL == 'true' }}
+        run: git config --global --add safe.directory "*"
+      - name: 'check github repository'
+        uses: actions/checkout@v3
+      - name: 'install root project npm packages'
+        run: npm install
+        working-directory: ${{github.workspace}}
+      - name: 'install run npm package'
+        run: |-
+          if [ ${{ github.event.inputs.LIVE }} == true ]; then
+            npm install ${SRC}/dev --global
+          else
+            npm install @ghostmind-dev/run --global
+          fi
+      - name: set environment
+        run: |-
+          run action env set
+      - name: 'install vault cmd'
+        run: |-
+          sudo apt install -y gpg
+          wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg >/dev/null
+          gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update
+          sudo apt-get install --reinstall -y vault
+          sudo chown root:root /usr/bin/vault
+      - name: 'login to vault'
+        env:
+          VAULT_ROOT_TOKEN: ${{ secrets.VAULT_ROOT_TOKEN }}
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR}}
+        run: |-
+          vault login "$VAULT_ROOT_TOKEN" -address="$VAULT_ADDR" -non-interactive=true
+      - name: 'set global secrets'
+        id: global-secrets
+        working-directory: ${{github.workspace}}
+        run: run action secrets set
+      - name: 'set up cloud sdk'
+        uses: 'google-github-actions/setup-gcloud@v0'
+        with:
+          install_components: 'kubectl,kustomize'
+      - name: 'set up gcloud credentials'
+        run: |-
+          echo ${GCP_SERVICE_ACCOUNT_ADMIN} | base64 -di -w 0 >/tmp/gsa_key.json
+          gcloud auth activate-service-account --key-file="/tmp/gsa_key.json"
+          gcloud config set project $GCP_PROJECT_NAME
+          gcloud config set compute/zone us-central1-b
+          gcloud auth configure-docker gcr.io --quiet
+      - name: 'terraform installation'
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.0.11
+      - name: 'authenticate gcr.io to docker'
+        run: |-
+          gcloud --quiet auth configure-docker gcr.io --quiet
+      - name: 'deploy app'
+        working-directory: '${{github.workspace}}/app'
+        run: |- 
+          run action secrets set
+          run custom init

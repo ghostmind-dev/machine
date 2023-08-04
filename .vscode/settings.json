@@ -1,0 +1,27 @@
+{
+  "files.exclude": {
+    "**/.gitignore": true,
+    "**/.git": true,
+    "**/.terraform": true,
+    "**/.tfstate": true,
+    "**/.npmrc": true,
+    "**/dev/dvc-command": true,
+    "**/.env.backup": true,
+    "**/.dockerignore": true,
+    "**/dvc-command": true,
+    "**/gha**": true,
+    "**/package-lock.json": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/.next": true,
+    "**/dist": true
+  },
+  "files.associations": {
+    "*.json": "jsonc"
+  },
+  "Lua.diagnostics.globals": ["kong", "ngx"],
+  "Lua.runtime.version": "LuaJIT",
+  "Lua.workspace.library": ["${3rd}/OpenResty/library"],
+  "Lua.workspace.checkThirdParty": false,
+  "terminal.integrated.defaultProfile.linux": "zsh"
+}

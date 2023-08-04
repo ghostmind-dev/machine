@@ -1,0 +1,12 @@
+{
+  "name": "ghostmind-machine",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@ghostmind-dev/run": "latest",
+    "dotenv": "^16.0.2",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
+    "prefix": "^1.0.0",
+    "zx": "^7.0.8"
+  }
+}
