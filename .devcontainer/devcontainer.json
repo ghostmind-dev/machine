@@ -9,7 +9,6 @@
   "overrideCommand": false,
   "containerUser": "vscode",
   "postCreateCommand": "/usr/local/share/post-create.mjs",
-  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
   "remoteUser": "vscode",
   "remoteEnv": {
     "SYNC_LOCALHOST_KUBECONFIG": "true",
