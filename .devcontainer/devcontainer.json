@@ -20,7 +20,8 @@
     "GOOGLE_APPLICATION_CREDENTIALS": "/tmp/gsa_key.json",
     "GCP_PROJECT_NAME": "ghostmind-core",
     "VAULT_ROOT_TOKEN": "${localEnv:VAULT_ROOT_TOKEN}",
-    "VAULT_ADDR": "${localEnv:VAULT_ADDR}"
+    "VAULT_ADDR": "${localEnv:VAULT_ADDR}",
+    "BUILDX_NO_DEFAULT_ATTESTATIONS": "1"
   },
   "containerEnv": {
     "INIT_EXPORT_ENV_PROJECT": "true",
