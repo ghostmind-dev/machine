@@ -86,7 +86,8 @@
         "github.copilot-chat",
         "github.copilot-nightly",
         "ms-python.python",
-        "prisma.prisma"
+        "prisma.prisma",
+        "bradlc.vscode-tailwindcss"
       ]
     }
   }
