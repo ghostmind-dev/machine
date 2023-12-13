@@ -27,14 +27,14 @@
     "INIT_EXPORT_ENV_PROJECT": "true",
     "INIT_EXPORT_ENV_ALL": "false",
     "INIT_DEV_INSTALL_DEPENDENCIES": "false",
-    "INIT_DEV_RESET_LIVE": "false",
+    "INIT_DEV_RESET_LIVE": "true",
     "INIT_LOGIN_NPM": "false",
-    "INIT_LOGIN_GCP": "false",
+    "INIT_LOGIN_GCP": "true",
     "INIT_LOGIN_GAM": "false",
     "INIT_LOGIN_VAULT": "true"
   },
-  "appPort": ["5050"],
-  "forwardPorts": [3000],
+  "forwardPorts": ["3000:3000", 4001],
+  "appPort": ["8085:8085"],
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind",
     "source=${env:HOME}${env:USERPROFILE}/.kube,target=/usr/local/share/kube-localhost,type=bind",
