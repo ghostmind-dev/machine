@@ -14,7 +14,11 @@
     "**/node_modules": true,
     "**/__pycache__": true,
     "**/.next": true,
-    "**/dist": true
+    "**/dist": true,
+    "**/.terraform.lock.hcl": true,
+    "**/backend.tf": true,
+    "**/versions.tf": true,
+    "**/meta.json": true
   },
   "files.associations": {
     "*.json": "jsonc"
@@ -23,5 +27,7 @@
   "Lua.runtime.version": "LuaJIT",
   "Lua.workspace.library": ["${3rd}/OpenResty/library"],
   "Lua.workspace.checkThirdParty": false,
-  "terminal.integrated.defaultProfile.linux": "zsh"
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "editor.formatOnSave": true,
+  "files.autoSave": "off"
 }

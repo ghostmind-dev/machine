@@ -1,17 +1,21 @@
-name: main-push
+name: live-push
 on:
   push:
     branches:
       - main
+      - preview
 env:
   SRC: ${{github.workspace}}
   VAULT_ROOT_TOKEN: ${{ secrets.VAULT_ROOT_TOKEN }}
   VAULT_ADDR: ${{ secrets.VAULT_ADDR}}
-  GCP_PROJECT_NAME: ${{secrets.GCP_PROJECT_NAME}}
+  GCP_PROJECT_NAME: "${{ secrets.GCP_PROJECT_NAME }}"
+  GCP_SERVICE_ACCOUNT_ADMIN : "${{ secrets.GCP_SERVICE_ACCOUNT_ADMIN }}"
+  GH_TOKEN: "${{ secrets.GH_TOKEN }}"
+  TERRAFORM_BUCKET_NAME": "${{ secrets.TERRAFORM_BUCKET_NAME }}"
   GOOGLE_APPLICATION_CREDENTIALS: "/tmp/gsa_key.json"
   BUILDX_NO_DEFAULT_ATTESTATIONS: "1"
 jobs:
-  prod-push:
+  live-push:
     runs-on: ubuntu-latest
     steps:
       - name: run git safe.directory
@@ -29,21 +33,23 @@ jobs:
           else
             npm install @ghostmind-dev/run --global
           fi
-      - name: Run custom detect-files
+      - name: Run Instructions Action
         id: detect-files
-        run: |
-          result=$(run custom detect-files '"${{ github.event.head_commit.message }}"')
-          echo "result=$result" >> $GITHUB_OUTPUT
-          if [ $result == 'no' ]; then
-            echo "no changes detected"
-          fi
-        working-directory: ${{ github.workspace }}/.github
+        uses: ghostmind-dev/detect@main
+        with:
+          commit-message: ${{ github.event.head_commit.message }}
+          possible-instructions: "web,state,all"
+          instructions-keyword: "INSTRUCTIONS="
     outputs:
       result: ${{ steps.detect-files.outputs.result }}
-  component-app:
+  component-state:
     runs-on: ubuntu-latest
-    needs: preview-push
-    if: ${{ needs.prod-push.outputs.result == 'yes' }}
+    needs: live-push
+    if: |-
+      ${{ 
+        needs.live-push.outputs.result == 'state' || 
+        needs.live-push.outputs.result == 'all' 
+      }}
     steps:
       - name: run git safe.directory
         if: ${{ github.event.inputs.LOCAL == 'true' }}
@@ -82,8 +88,8 @@ jobs:
         id: global-secrets
         working-directory: ${{github.workspace}}
         run: run action secrets set
-      - name: "set up cloud sdk"
-        uses: "google-github-actions/setup-gcloud@v0"
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
         with:
           install_components: "kubectl,kustomize"
       - name: "set up gcloud credentials"
@@ -96,12 +102,15 @@ jobs:
       - name: "terraform installation"
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.0.11
+          terraform_version: 1.3.7
       - name: "authenticate gcr.io to docker"
         run: |-
           gcloud --quiet auth configure-docker gcr.io --quiet
-      - name: "deploy app"
-        working-directory: "${{github.workspace}}/app"
+      - name: install hasurs
         run: |-
-          run action secrets set
-          run custom init
+          curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+      # - name: "deploy app"
+      #   working-directory: "${{github.workspace}}/app/state"
+      #   run: |-
+      #     run action secrets set
+      #     run custom init

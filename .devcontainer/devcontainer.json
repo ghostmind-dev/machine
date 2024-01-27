@@ -19,12 +19,16 @@
     "LOCALHOST_SRC": "${env:HOME}${env:USERPROFILE}/projects/container/machine",
     "GOOGLE_APPLICATION_CREDENTIALS": "/tmp/gsa_key.json",
     "GCP_PROJECT_NAME": "ghostmind-core",
+    "GCP_SERVICE_ACCOUNT_ADMIN": "${localEnv:GCP_SERVICE_ACCOUNT_ADMIN}",
+    "GH_TOKEN": "${localEnv:GH_TOKEN}",
+    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
+    "TERRAFORM_BUCKET_NAME": "${localEnv:TERRAFORM_BUCKET_NAME}",
     "VAULT_ROOT_TOKEN": "${localEnv:VAULT_ROOT_TOKEN}",
     "VAULT_ADDR": "${localEnv:VAULT_ADDR}",
     "BUILDX_NO_DEFAULT_ATTESTATIONS": "1"
   },
   "containerEnv": {
-    "INIT_EXPORT_ENV_PROJECT": "true",
+    "INIT_EXPORT_ENV_PROJECT": "false",
     "INIT_EXPORT_ENV_ALL": "false",
     "INIT_DEV_INSTALL_DEPENDENCIES": "false",
     "INIT_DEV_RESET_LIVE": "true",
@@ -33,7 +37,7 @@
     "INIT_LOGIN_GAM": "false",
     "INIT_LOGIN_VAULT": "true"
   },
-  "forwardPorts": ["3000:3000", 4001],
+  "forwardPorts": ["3000:3000"],
   "appPort": ["8085:8085"],
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind",
@@ -88,7 +92,7 @@
         "ms-python.python",
         "prisma.prisma",
         "bradlc.vscode-tailwindcss",
-        "github.vscode-pull-request-github"
+        "mariorodeghiero.vue-theme"
       ]
     }
   }
