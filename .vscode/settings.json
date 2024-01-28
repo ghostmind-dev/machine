@@ -1,4 +1,6 @@
 {
+  "files.autoSave": "off",
+  "editor.formatOnSave": true,
   "files.exclude": {
     "**/.gitignore": true,
     "**/.git": true,
@@ -18,16 +20,16 @@
     "**/.terraform.lock.hcl": true,
     "**/backend.tf": true,
     "**/versions.tf": true,
-    "**/meta.json": true
+    "**/meta.json": true,
+    "**/.npmignore": true
   },
   "files.associations": {
     "*.json": "jsonc"
   },
-  "Lua.diagnostics.globals": ["kong", "ngx"],
-  "Lua.runtime.version": "LuaJIT",
-  "Lua.workspace.library": ["${3rd}/OpenResty/library"],
-  "Lua.workspace.checkThirdParty": false,
   "terminal.integrated.defaultProfile.linux": "zsh",
-  "editor.formatOnSave": true,
-  "files.autoSave": "off"
+  "prettier.singleQuote": true,
+  "vs-kubernetes": {
+    "disable-linters": ["resource-limits"]
+  },
+  "shellformat.path": "/home/vscode/go/bin/shfmt"
 }

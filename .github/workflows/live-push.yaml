@@ -62,10 +62,12 @@ jobs:
       - name: "install run npm package"
         run: |-
           if [ ${{ github.event.inputs.LIVE }} == true ]; then
-            npm install ${SRC}/dev --global
+            npm run build
+            npm install dev --global
           else
             npm install @ghostmind-dev/run --global
           fi
+        working-directory: ${{github.workspace}}
       - name: set environment
         run: |-
           run action env set
@@ -109,8 +111,8 @@ jobs:
       - name: install hasurs
         run: |-
           curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
-      # - name: "deploy app"
-      #   working-directory: "${{github.workspace}}/app/state"
-      #   run: |-
-      #     run action secrets set
-      #     run custom init
+      - name: "deploy app"
+        working-directory: "${{github.workspace}}/app/state"
+        run: |-
+          run action secrets set
+          run custom init
