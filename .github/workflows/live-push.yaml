@@ -23,9 +23,6 @@ jobs:
         run: git config --global --add safe.directory "*"
       - name: "check github repository"
         uses: actions/checkout@v3
-      - name: "install root project npm packages"
-        run: npm install
-        working-directory: ${{github.workspace}}
       - name: "install run npm package"
         run: |-
           if [ ${{ github.event.inputs.LIVE }} == true ]; then
