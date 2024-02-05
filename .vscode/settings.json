@@ -20,8 +20,8 @@
     "**/.terraform.lock.hcl": false,
     "**/backend.tf": false,
     "**/versions.tf": false,
-    "**/meta.json": false,
-    "**/.npmignore": false
+    "**/.npmignore": false,
+    "**/.env.compose": false
   },
   "files.associations": {
     "*.json": "jsonc"
