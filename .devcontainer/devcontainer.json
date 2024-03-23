@@ -23,6 +23,9 @@
     "GH_TOKEN": "${localEnv:GH_TOKEN}",
     "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
     "TERRAFORM_BUCKET_NAME": "${localEnv:TERRAFORM_BUCKET_NAME}",
+    "CLOUDFLARED_CREDS": "${localEnv:CLOUDFLARED_CREDS}",
+    "CLOUDFLARED_TUNNEL_NAME": "${localEnv:CLOUDFLARED_TUNNEL_NAME}",
+    "CLOUDFLARED_TUNNEL_TOKEN": "${localEnv:CLOUDFLARED_TUNNEL_TOKEN}",
     "VAULT_ROOT_TOKEN": "${localEnv:VAULT_ROOT_TOKEN}",
     "VAULT_ADDR": "${localEnv:VAULT_ADDR}",
     "BUILDX_NO_DEFAULT_ATTESTATIONS": "1"
@@ -35,7 +38,8 @@
     "INIT_LOGIN_NPM": "false",
     "INIT_LOGIN_GCP": "true",
     "INIT_LOGIN_GAM": "false",
-    "INIT_LOGIN_VAULT": "true"
+    "INIT_LOGIN_VAULT": "true",
+    "INIT_LOGIN_CLOUDFLARED": "true"
   },
   "forwardPorts": ["3000:3000"],
   "appPort": ["8085:8085"],
