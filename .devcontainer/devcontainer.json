@@ -13,8 +13,7 @@
   "remoteUser": "vscode",
   "remoteEnv": {
     "SRC": "${containerWorkspaceFolder}",
-    "APP": "${containerWorkspaceFolder}/potion",
-    "LOCALHOST_SRC": "${env:HOME}${env:USERPROFILE}/projects/ghostmind/potion",
+    "LOCALHOST_SRC": "${env:HOME}${env:USERPROFILE}/projects/container/machine",
     "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
     "VAULT_ROOT_TOKEN": "${localEnv:VAULT_ROOT_TOKEN}",
     "VAULT_ADDR": "${localEnv:VAULT_ADDR}"
@@ -34,14 +33,14 @@
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind",
     "source=${env:HOME}${env:USERPROFILE}/.kube,target=/usr/local/share/kube-localhost,type=bind",
-    "source=ghostmind-potion-history,target=/commandhistory,type=volume",
-    "source=${env:HOME}${env:USERPROFILE}/projects/ghostmind/potion,target=/Users/francoisseguin/projects/ghostmind/potion,type=bind"
+    "source=ghostmind-machine-history,target=/commandhistory,type=volume",
+    "source=${env:HOME}${env:USERPROFILE}/projects/container/machine,target=/Users/francoisseguin/projects/container/machine,type=bind"
   ],
   "runArgs": [
     "--cap-add=CAP_IPC_LOCK",
     "--cap-add=NET_ADMIN",
     "--network=host",
-    "--name=potion-devcontainer"
+    "--name=machine-devcontainer"
   ],
   "customizations": {
     "vscode": {
