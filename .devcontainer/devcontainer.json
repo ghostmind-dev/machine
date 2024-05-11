@@ -19,16 +19,7 @@
     "VAULT_ADDR": "${localEnv:VAULT_ADDR}"
   },
   "containerEnv": {
-    "INIT_EXPORT_ENV_PROJECT": "false",
-    "INIT_EXPORT_ENV_ALL": "false",
-    "INIT_DEV_INSTALL_DEPENDENCIES": "false",
-    "INIT_DEV_RESET_LIVE": "true",
-    "INIT_LOGIN_NPM": "false",
-    "INIT_LOGIN_GCP": "true",
-    "INIT_LOGIN_GAM": "false",
-    "INIT_LOGIN_VAULT": "true",
-    "INIT_LOGIN_CLOUDFLARED": "true",
-    "INIT_QUOTE_AI": "true"
+    "INIT_DEV_RESET_LIVE": "true"
   },
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind",
