@@ -19,7 +19,10 @@
     "VAULT_ADDR": "${localEnv:VAULT_ADDR}"
   },
   "containerEnv": {
-    "INIT_DEV_RESET_LIVE": "true"
+    "INIT_RESET_LIVE": "true",
+    "INIT_LOGIN_GCP": "true",
+    "INIT_LOGIN_GHCR": "false",
+    "INIT_LOGIN_CLOUDFLARE": "true"
   },
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind",

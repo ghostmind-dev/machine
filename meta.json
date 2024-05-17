@@ -1,5 +1,8 @@
 {
   "id": "HAD2zVKmGiB0",
   "type": "project",
-  "name": "machine"
+  "name": "machine",
+  "routines": {
+    "start_tunnel": "run tunnel run --all"
+  }
 }
