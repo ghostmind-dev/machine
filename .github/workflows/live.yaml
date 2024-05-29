@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{env.SRC}}/templates/butane
+        working-directory: ${{env.SRC}}/app
     steps:
       - name: run git safe.directory
         if: ${{ github.event.inputs.LOCAL == 'true' }}
@@ -41,7 +41,13 @@ jobs:
         env:
           VAULT_ROOT_TOKEN: ${{ secrets.VAULT_ROOT_TOKEN }}
           VAULT_ADDR: ${{ secrets.VAULT_ADDR}}
-        run: vault login "$VAULT_ROOT_TOKEN" -address="$VAULT_ADDR" -non-interactive=true
+        run: |-
+          if vault login "$VAULT_ROOT_TOKEN" -address="$VAULT_ADDR" -non-interactive=true --no-print=true >/dev/null 2>&1; then
+            echo "Vault login successful"
+          else
+            echo "Vault login failed"
+            exit 1
+          fi
       - name: 'set global secrets'
         run: run action secrets set --global
       - name: 'Set up Cloud SDK'
