@@ -60,5 +60,11 @@
   "python.analysis.diagnosticSeverityOverrides": {
     "reportMissingImports": "none",
     "reportMissingModuleSource": "none"
-  }
+  },
+  "json.schemas": [
+    {
+      "fileMatch": ["**/meta.json"],
+      "url": "https://raw.githubusercontent.com/ghostmind-dev/dotfiles/main/config/meta/schema.json"
+    }
+  ]
 }
