@@ -40,7 +40,7 @@
     { "icon": "audio", "extensions": ["dev"], "format": "svg" },
     { "icon": "docker", "extensions": ["container"], "format": "svg" },
     { "icon": "e2e", "extensions": ["workflows"], "format": "svg" },
-    { "icon": "buildkite", "extensions": ["run"], "format": "svg" }
+    { "icon": "buildkite", "extensions": ["run"], "format": "svg" },
     { "icon": "app", "extensions": ["app"], "format": "svg" }
   ],
   "vsicons.associations.files": [
